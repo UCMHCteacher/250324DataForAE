@@ -1,0 +1,35 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+imports/
+
+# Executables
+*.exe
+*.out
+*.app
+TestField/
+
+# vscode auto generated settings
+.vscode/
+.vs/
+
+# complied files
+.cmakebuild/
