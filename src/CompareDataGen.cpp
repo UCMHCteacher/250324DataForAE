@@ -340,13 +340,16 @@ int main(int argc, char* argv[]) {
         }
 
 
-        std::unique_ptr<uint8_t[]> dataFileData {std::make_unique<uint8_t[]>(dataFileLen)};
-        std::fstream fileHandle {dataFilePath};
-        fileHandle.rdbuf()->sgetn(reinterpret_cast<char *>(dataFileData.get()), dataFileLen);
+        char* dataBuffer = new char[dataFileLen + 1];
+        std::ifstream dataFileHandle {dataFilePath, std::ios::binary};
+        if (!dataFileHandle.read(dataBuffer, dataFileLen)) {
+            std::cerr << "Failed to read file!\n";
+            continue;
+        }
 
         onExecutingFtr.wait();
         std::this_thread::sleep_for(2s);
-        if (send(sendSocket, (char*)dataFileData.get(), dataFileLen, 0) < 0) {
+        if (send(sendSocket, dataBuffer, dataFileLen, 0) < 0) {
             perror("send failed");
             CLOSE_SOCKET(sendSocket);
             std::exit(EXIT_FAILURE);
@@ -357,7 +360,7 @@ int main(int argc, char* argv[]) {
 
 
         // send Terminate Symbol
-        std::this_thread::sleep_for(2s);
+        std::this_thread::sleep_for(5s);
         summaryHeaderThread.join();
         stdfs::create_directories(terminateSymbol);
         commandThread.join();
