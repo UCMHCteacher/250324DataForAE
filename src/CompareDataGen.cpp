@@ -311,6 +311,9 @@ int main(int argc, char* argv[]) {
                         << "\t\t\"FileLength\" : " << dataFileLen << ",\n"
                         << "\t\t\"ChunkCount\" : " << chunkCount << "\n"
                         << "\t},\n";
+
+                    delete getChunkCountRes;
+                    delete getChunkCountStmt;
                 }
 
                 delete getFileIDRes;
