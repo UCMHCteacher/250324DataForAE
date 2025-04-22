@@ -296,7 +296,10 @@ int main(int argc, char* argv[]) {
                 getFileIDRes = getFileIDStmt->executeQuery();
                 if (getFileIDRes->next()) {
                     summaryOutputFile 
-                        << "\t\"Answer\" : " << getFileIDRes->getUInt("file_id") << ",\n";
+                        << "\t\"Answer\" : {\n" 
+                        << "\t\t\"FileID\" : " << getFileIDRes->getUInt("file_id") << ",\n"
+                        << "\t\t\"FileLength\" : " << dataFileLen << '\n'
+                        << "\t},\n";
                 }
 
                 delete getFileIDRes;
