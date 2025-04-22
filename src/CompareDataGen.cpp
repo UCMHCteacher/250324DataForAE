@@ -368,6 +368,7 @@ int main(int argc, char* argv[]) {
 
 
         CLOSE_SOCKET(sendSocket);
+        delete[] dataBuffer;
         summaryCount++;
     }
 
