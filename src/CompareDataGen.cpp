@@ -295,10 +295,21 @@ int main(int argc, char* argv[]) {
         
                 getFileIDRes = getFileIDStmt->executeQuery();
                 if (getFileIDRes->next()) {
+                    uint32_t fileID = getFileIDRes->getUInt("file_id");
+
+                    sql::PreparedStatement *  getChunkCountStmt = con->prepareStatement(
+                        "SELECT COUNT(*) FROM chunks WHERE file_id = ?"
+                    );
+                    getChunkCountStmt->setUInt(1, fileID);
+                    sql::ResultSet *  getChunkCountRes = getChunkCountStmt->executeQuery();
+                    uint32_t chunkCount = 0;
+                    if (getChunkCountRes->next()) chunkCount = getChunkCountRes->getInt(1);
+
                     summaryOutputFile 
                         << "\t\"Answer\" : {\n" 
                         << "\t\t\"FileID\" : " << getFileIDRes->getUInt("file_id") << ",\n"
-                        << "\t\t\"FileLength\" : " << dataFileLen << '\n'
+                        << "\t\t\"FileLength\" : " << dataFileLen << ",\n"
+                        << "\t\t\"ChunkCount\" : " << chunkCount << "\n"
                         << "\t},\n";
                 }
 
